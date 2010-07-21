@@ -23,7 +23,7 @@ $font = './DejaVuSans.ttf'; //path to font you want to use
 $fontsize = 10; //size of font
 
 //Writes text to the image using fonts using FreeType 2
-imagettftext($bg, $fontsize, 0, 10, 10, $black, $font, $text);
+imagettftext($bg, $fontsize, 0, 10, 12, $black, $font, $text);
 
 //Create image
 imagepng($bg);
