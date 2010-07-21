@@ -32,7 +32,6 @@ class action_plugin_custombuttons extends DokuWiki_Action_Plugin
 		$list_array = array();
 		foreach ($ini_array as $key => $value)
 		{
-			//$list_array[] = array('type' => 'format', 'title' => $key, 'icon' => '../../plugins/custombuttons/genpng.php?text='.$key, 'insert' => $value );
 			$list_array[$value] = '../../plugins/custombuttons/genpng.php?text='.$key;
 		}
 		return $list_array;
