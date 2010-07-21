@@ -43,7 +43,8 @@ class action_plugin_custombuttons extends DokuWiki_Action_Plugin
                 $event->data[] = array (
                         'type' => 'picker',
                         'title' => 'Custom Buttons',
-			'icon' => '../../plugins/custombuttons/picker.png',
+			'icon' => '../../plugins/custombuttons/genpng.php?text=Custom',
+			//'icon' => '../../plugins/custombuttons/picker.png',
                         'list' => $list_array
                 );
         }
