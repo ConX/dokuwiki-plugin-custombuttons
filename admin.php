@@ -56,7 +56,7 @@ class admin_plugin_custombuttons extends DokuWiki_Admin_Plugin
 		global $ID;
 	
 		ptln('<h1>Custom Buttons Configurations</h1>');
-		ptln('<div>Add your custom buttons in the following format:<br><pre class="code">&lt;name&gt; = &lt;Shortcut code&gt;<br></pre>Example:</br><pre class="code">syntax =  "[[wiki:syntax|syntax]]"</pre> </div>')
+		ptln('<div>Add your custom buttons in the following format:<br><pre class="code">&lt;name&gt; = &lt;Shortcut code&gt;<br></pre>Example:</br><pre class="code">syntax =  "[[wiki:syntax|syntax]]"</pre> </div>');
 		ptln('<form name="frm" action="'.wl($ID).'" method="post">');
 		ptln('<input type="hidden" name="do"   value="admin" />');
 		ptln('<input type="hidden" name="page" value="'.$this->getPluginName().'" />');
