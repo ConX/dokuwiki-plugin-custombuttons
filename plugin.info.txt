@@ -1,5 +1,5 @@
 base   custombuttons
-author Xanthopoulos Constantinos
+author Constantinos Xanthopoulos
 email  conx@xanthopoulos.info
 date   2010-07-20
 name   custombuttons plugin

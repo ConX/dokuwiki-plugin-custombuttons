@@ -3,7 +3,7 @@
  * DokuWiki Plugin cstbtn (Action Component)
  *
  * @license GPL 2 http://www.gnu.org/licenses/gpl-2.0.html
- * @author  Xanthopoulos Constantinos <conx@xanthopoulos.info>
+ * @author Constantinos Xanthopoulos <conx@xanthopoulos.info>
  */
 
 // must be run within Dokuwiki
@@ -20,32 +20,54 @@ class action_plugin_custombuttons extends DokuWiki_Action_Plugin
 
         function register(&$controller)
         {
-		if (file_exists(DOKU_PLUGIN."custombuttons/config.ini"))
-		{
-			$controller->register_hook('TOOLBAR_DEFINE', 'AFTER', $this, 'insert_button');
-		}
+		if (file_exists(DOKU_PLUGIN."custombuttons/config.json"))
+			$controller->register_hook('TOOLBAR_DEFINE', 'AFTER', $this, 'insert_button', array());
         }
 
-	function parse_ini()
+	function loadCBData()
 	{
-		$ini_array = parse_ini_file(DOKU_PLUGIN."custombuttons/config.ini");
-		$list_array = array();
-		foreach ($ini_array as $key => $value)
+		if (! $file = file_get_contents(DOKU_PLUGIN."custombuttons/config.json"))
+			return false;
+		$cbconf = json_decode($file,TRUE);
+		return $cbconf;
+	}
+	
+	function makelist()
+	{
+		$conf = $this->loadCBData();
+		$buttonlist = array();
+		foreach ($conf as $button)
 		{
-			$list_array[$value] = '../../plugins/custombuttons/genpng.php?text='.$key;
+			if ($button["type"] == 1)
+			{
+				$buttonlist[] =  array(
+					'type' => 'format',
+					'title' => $button["label"],
+					'icon' => '../../plugins/custombuttons/genpng.php?text='.$button["label"],
+					'open' => $button["pretag"],
+					'close' => $button["posttag"]);
+			}
+			else
+			{
+				$buttonlist[] =  array(
+					'type'   => 'insert',
+					'title'  =>  $button["label"],
+					'icon'   =>  '../../plugins/custombuttons/genpng.php?text='.$button["label"],
+					'insert' => $button["code"],
+					'block'  => true);
+			}
 		}
-		return $list_array;
+		return $buttonlist;
 	}
 
         function insert_button(&$event, $param)
 	{
-		$list_array = $this->parse_ini();
+		$buttonlist = $this->makelist();
                 $event->data[] = array (
                         'type' => 'picker',
                         'title' => 'Custom Buttons',
-			'icon' => '../../plugins/custombuttons/genpng.php?text=Custom',
-			//'icon' => '../../plugins/custombuttons/picker.png',
-                        'list' => $list_array
+			'icon' => '../../plugins/custombuttons/custom.png',
+                        'list' => $buttonlist
                 );
         }
 }
