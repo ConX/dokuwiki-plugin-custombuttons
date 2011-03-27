@@ -64,6 +64,8 @@ class admin_plugin_custombuttons extends DokuWiki_Admin_Plugin
 		{
 			if (!checkSecurityToken()) return;
 			$conf = $this->loadCBData();
+			if (!$conf)
+				$conf = array(); //First run
 			$type = 0;
 			if ($_REQUEST["pretag"] != "" && $_REQUEST["posttag"] != "")
 				$type = 1;
