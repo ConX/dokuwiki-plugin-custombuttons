@@ -97,13 +97,15 @@ class admin_plugin_custombuttons extends DokuWiki_Admin_Plugin
 		formSecurityToken();
 		ptln('  <table class="inline">');
 		ptln('    <tr><th>Label</th><th>Code</th><th>Delete?</th></tr>');
-		dbglog($conf);
-		foreach ($conf as $key => $button)
+		if ($conf)
 		{
-			if (!$button["type"])
-				ptln('    <tr><td>'.$button["label"].'</td><td>'.htmlspecialchars($button["code"]).'</td><td><center><input type="radio" name="delete" value="'.$key.'"/></center></td></tr>');		# FIXME Del image	
-			else
-				ptln('    <tr><td>'.$button["label"].'</td><td>'.htmlspecialchars($button["pretag"]).htmlspecialchars($button["code"]).htmlspecialchars($button["posttag"]).'</td><td><center><input type="radio" name="delete" value="'.$key.'"/></center></td></tr>');		# FIXME Del image	
+			foreach ($conf as $key => $button)
+			{
+				if (!$button["type"])
+					ptln('    <tr><td>'.$button["label"].'</td><td>'.htmlspecialchars($button["code"]).'</td><td><center><input type="radio" name="delete" value="'.$key.'"/></center></td></tr>');		# FIXME Del image	
+				else
+					ptln('    <tr><td>'.$button["label"].'</td><td>'.htmlspecialchars($button["pretag"]).htmlspecialchars($button["code"]).htmlspecialchars($button["posttag"]).'</td><td><center><input type="radio" name="delete" value="'.$key.'"/></center></td></tr>');		# FIXME Del image	
+			}
 		}
 		ptln('  </table>');
 		ptln('<input type="submit" class="button" value="Delete Selected"/>');

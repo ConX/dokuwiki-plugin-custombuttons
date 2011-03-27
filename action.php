@@ -20,7 +20,7 @@ class action_plugin_custombuttons extends DokuWiki_Action_Plugin
 
         function register(&$controller)
         {
-		if (file_exists(DOKU_PLUGIN."custombuttons/config.json"))
+		if ($this->loadCBData())
 			$controller->register_hook('TOOLBAR_DEFINE', 'AFTER', $this, 'insert_button', array());
         }
 
