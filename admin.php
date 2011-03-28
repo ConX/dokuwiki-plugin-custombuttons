@@ -17,17 +17,6 @@ require_once DOKU_PLUGIN.'admin.php';
 
 class admin_plugin_custombuttons extends DokuWiki_Admin_Plugin
 {
-	function getInfo(){
-		return array(
-			'author' => 'Constantinos Xanthopoulos',
-			'email'  => 'conx@xanthopoulos.info',
-			'date'   => '2010-7-21',
-			'name'   => 'CustomButtons',
-			'desc'   => 'A plugin for adding custom buttons to the toolbar, to shortcut commonly used code blocks.',
-			'url'    => 'http://www.dokuwiki.org/plugin:custombuttons',
-		);
-	}
-
 
 	function forAdminOnly()
 	{
