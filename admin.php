@@ -26,15 +26,17 @@ class admin_plugin_custombuttons extends DokuWiki_Admin_Plugin
 
 	function loadCBData()
 	{
+		$json = new JSON($use=JSON_LOOSE_TYPE);
 		if (! $file = file_get_contents(DOKU_PLUGIN."custombuttons/config.json"))
 			return false;
-		$cbconf = json_decode($file,TRUE);
+		$cbconf = $json->decode($file);
 		return $cbconf;
 	}
 
 	function saveCBData($conf)
 	{
-		$json = json_encode($conf);
+		$json = new JSON($use=JSON_LOOSE_TYPE);
+		$json = $json->encode($conf);
 		if(file_put_contents(DOKU_PLUGIN."custombuttons/config.json", $json))
 			return false;
 	}
@@ -77,9 +79,9 @@ class admin_plugin_custombuttons extends DokuWiki_Admin_Plugin
 	function html()
 	{
 		global $ID;
-		
 		$conf = $this->loadCBData();
-	
+		
+
 		//dbg($conf);
 		ptln('<h3>Buttons List</h3>');
 		ptln('<form action="'.wl($ID).'" method="post">');
