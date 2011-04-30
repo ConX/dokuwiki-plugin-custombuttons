@@ -43,10 +43,9 @@ class admin_plugin_custombuttons extends DokuWiki_Admin_Plugin
 
 	function reloadBar()
 	{
-		copy(DOKU_INC."conf/local.php", DOKU_INC."conf/local2.php");
-		copy(DOKU_INC."conf/local2.php", DOKU_INC."conf/local.php");
-		unlink(DOKU_INC."conf/local2.php");
-
+        copy(DOKU_CONF."local.php", DOKU_CONF."local2.php");
+        copy(DOKU_CONF."local2.php", DOKU_CONF."local.php");
+        unlink(DOKU_CONF."local2.php");
 	}
 	
 	function handle()
@@ -122,4 +121,4 @@ class admin_plugin_custombuttons extends DokuWiki_Admin_Plugin
 	}
 }
 
-// vim:ts=4:sw=4:et:enc=utf-8:
+// vim:ts=4:sw=4:et
