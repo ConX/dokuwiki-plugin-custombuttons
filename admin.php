@@ -43,9 +43,9 @@ class admin_plugin_custombuttons extends DokuWiki_Admin_Plugin
 
 	function reloadBar()
 	{
-        copy(DOKU_CONF."local.php", DOKU_CONF."local2.php");
-        copy(DOKU_CONF."local2.php", DOKU_CONF."local.php");
-        unlink(DOKU_CONF."local2.php");
+		copy(DOKU_CONF."local.php", DOKU_CONF."local2.php");
+		copy(DOKU_CONF."local2.php", DOKU_CONF."local.php");
+		unlink(DOKU_CONF."local2.php");
 	}
 	
 	function handle()
@@ -120,5 +120,3 @@ class admin_plugin_custombuttons extends DokuWiki_Admin_Plugin
 		ptln('<br><br><div><b>*</b> If you dont want to add a shortcut button with pre and post code leave those fields empty.</div>');
 	}
 }
-
-// vim:ts=4:sw=4:et
