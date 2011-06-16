@@ -30,4 +30,3 @@ imagepng($bg);
 
 //destroy image
 ImageDestroy($bg);
-?>
