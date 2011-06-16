@@ -34,18 +34,25 @@ class action_plugin_custombuttons extends DokuWiki_Action_Plugin {
         $conf = $this->loadCBData();
         $buttonlist = array();
         foreach ($conf as $button) {
+            $ico = '../../plugins/custombuttons/';
+            if(!$button['icon']){
+                $ico .= 'genpng.php?text='.$button["label"];
+            }else{
+                $ico .= 'ico/'.$button['icon'];
+            }
+
             if ($button["type"] == 1) {
                 $buttonlist[] =  array(
-                        'type' => 'format',
+                        'type'  => 'format',
                         'title' => $button["label"],
-                        'icon' => '../../plugins/custombuttons/genpng.php?text='.$button["label"],
-                        'open' => $button["pretag"],
+                        'icon'  => $ico,
+                        'open'  => $button["pretag"],
                         'close' => $button["posttag"]);
             } else {
                 $buttonlist[] =  array(
                         'type'   => 'insert',
                         'title'  =>  $button["label"],
-                        'icon'   =>  '../../plugins/custombuttons/genpng.php?text='.$button["label"],
+                        'icon'   =>  $ico,
                         'insert' => $button["code"],
                         'block'  => true);
             }

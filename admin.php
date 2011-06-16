@@ -51,7 +51,8 @@ class admin_plugin_custombuttons extends DokuWiki_Admin_Plugin {
                 "code" => $_REQUEST["code"],
                 "type" => $type,
                 "pretag" => $_REQUEST["pretag"],
-                "posttag" => $_REQUEST["posttag"]
+                "posttag" => $_REQUEST["posttag"],
+                "icon" => $_REQUEST["icon"],
             ));
             $this->saveCBData($conf);
             $this->reloadBar();
@@ -96,6 +97,16 @@ class admin_plugin_custombuttons extends DokuWiki_Admin_Plugin {
         ptln('  <input type="hidden" name="page" value="'.$this->getPluginName().'" />');
         formSecurityToken();
         ptln('  <table>');
+        ptln('    <tr><th>Icon:</th><td>');
+        ptln('<select name="icon">');
+        ptln('<option value="">text only</option>');
+        $files = glob(dirname(__FILE__).'/ico/*.png');
+        foreach($files as $file){
+            $file = hsc(basename($file));
+            ptln('<option value="'.$file.'" style="padding-left: 18px; background: #fff url('.DOKU_BASE.'lib/plugins/custombuttons/ico/'.$file.') left center no-repeat">'.$file.'</option>');
+        }
+        ptln('</select>');
+        ptln('    </td></tr>');
         ptln('    <tr><th>Label:</th><td><input type="text" name="label" /></td></tr>');
         ptln('    <tr><th>Pre tag:</th><td><input type="text" name="pretag" /><b> *</b></td></tr>');
         ptln('    <tr><th>Post tag:</th><td><input type="text" name="posttag" /><b> *</b></td></tr>');
