@@ -39,9 +39,9 @@ class admin_plugin_custombuttons extends DokuWiki_Admin_Plugin {
     }
 
     function handle() {
-        if (!checkSecurityToken()) return;
 
         if (isset($_REQUEST['add'])) {
+            if (!checkSecurityToken()) return;
             $conf = $this->loadCBData();
             $type = 0;
             if ($_REQUEST["pretag"] != "" && $_REQUEST["posttag"] != "") $type = 1;
@@ -55,6 +55,7 @@ class admin_plugin_custombuttons extends DokuWiki_Admin_Plugin {
             $this->saveCBData($conf);
             $this->reloadBar();
         } elseif (isset($_REQUEST['delete'])) {
+            if (!checkSecurityToken()) return;
             $conf = $this->loadCBData();
             unset($conf[$_REQUEST["delete"]]);
             $this->saveCBData($conf);
