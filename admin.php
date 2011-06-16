@@ -22,46 +22,44 @@ class admin_plugin_custombuttons extends DokuWiki_Admin_Plugin {
     }
 
     function loadCBData() {
-        $json = new JSON($use=JSON_LOOSE_TYPE);
-        if (! $file = file_get_contents(DOKU_PLUGIN."custombuttons/config.json"))
-            return false;
-        $cbconf = $json->decode($file);
-        return $cbconf;
+        $json = new JSON(JSON_LOOSE_TYPE);
+        $file = @file_get_contents(DOKU_PLUGIN."custombuttons/config.json");
+        if(!$file) return false;
+        return $json->decode($file);
     }
 
     function saveCBData($conf) {
-        $json = new JSON($use=JSON_LOOSE_TYPE);
+        $json = new JSON();
         $json = $json->encode($conf);
-        if(file_put_contents(DOKU_PLUGIN."custombuttons/config.json", $json))
-            return false;
+        file_put_contents(DOKU_PLUGIN."custombuttons/config.json", $json);
     }
 
     function reloadBar() {
-        copy(DOKU_CONF."local.php", DOKU_CONF."local2.php");
-        copy(DOKU_CONF."local2.php", DOKU_CONF."local.php");
-        unlink(DOKU_CONF."local2.php");
+        touch(DOKU_CONF."local.php");
     }
 
     function handle() {
+        if (!checkSecurityToken()) return;
+
         if (isset($_REQUEST['add'])) {
-            if (!checkSecurityToken()) return;
             $conf = $this->loadCBData();
-            if (!$conf)
-                $conf = array(); //First run
             $type = 0;
-            if ($_REQUEST["pretag"] != "" && $_REQUEST["posttag"] != "")
-                $type = 1;
-            array_push($conf,array("label" => $_REQUEST["label"], "code" => $_REQUEST["code"], "type" => $type, "pretag" => $_REQUEST["pretag"], "posttag" => $_REQUEST["posttag"]));
+            if ($_REQUEST["pretag"] != "" && $_REQUEST["posttag"] != "") $type = 1;
+            array_push($conf, array(
+                "label" => $_REQUEST["label"],
+                "code" => $_REQUEST["code"],
+                "type" => $type,
+                "pretag" => $_REQUEST["pretag"],
+                "posttag" => $_REQUEST["posttag"]
+            ));
             $this->saveCBData($conf);
             $this->reloadBar();
         } elseif (isset($_REQUEST['delete'])) {
-            if (!checkSecurityToken()) return;
             $conf = $this->loadCBData();
             unset($conf[$_REQUEST["delete"]]);
             $this->saveCBData($conf);
             $this->reloadBar();
-        } else
-            return;
+        }
     }
 
     function html() {

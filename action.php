@@ -23,11 +23,12 @@ class action_plugin_custombuttons extends DokuWiki_Action_Plugin {
     }
 
     function loadCBData() {
-        if (! $file = file_get_contents(DOKU_PLUGIN."custombuttons/config.json"))
-            return false;
-        $cbconf = json_decode($file,TRUE);
-        return $cbconf;
+        $json = new JSON(JSON_LOOSE_TYPE);
+        $file = @file_get_contents(DOKU_PLUGIN."custombuttons/config.json");
+        if(!$file) return false;
+        return $json->decode($file);
     }
+
 
     function makelist() {
         $conf = $this->loadCBData();
