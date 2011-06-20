@@ -15,61 +15,59 @@ if (!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN',DOKU_INC.'lib/plugins/');
 
 require_once DOKU_PLUGIN.'action.php';
 
-class action_plugin_custombuttons extends DokuWiki_Action_Plugin 
-{
+class action_plugin_custombuttons extends DokuWiki_Action_Plugin {
 
-        function register(&$controller)
-        {
-		if ($this->loadCBData())
-			$controller->register_hook('TOOLBAR_DEFINE', 'AFTER', $this, 'insert_button', array());
+    function register(&$controller) {
+        if ($this->loadCBData())
+            $controller->register_hook('TOOLBAR_DEFINE', 'AFTER', $this, 'insert_button', array());
+    }
+
+    function loadCBData() {
+        $json = new JSON(JSON_LOOSE_TYPE);
+        $file = @file_get_contents(DOKU_PLUGIN."custombuttons/config.json");
+        if(!$file) return false;
+        return $json->decode($file);
+    }
+
+
+    function makelist() {
+        $conf = $this->loadCBData();
+        $buttonlist = array();
+        foreach ($conf as $button) {
+            $ico = '../../plugins/custombuttons/';
+            if(!$button['icon']){
+                $ico .= 'genpng.php?text='.$button["label"];
+            }else{
+                $ico .= 'ico/'.$button['icon'];
+            }
+
+            if ($button["type"] == 1) {
+                $buttonlist[] =  array(
+                        'type'  => 'format',
+                        'title' => $button["label"],
+                        'icon'  => $ico,
+                        'open'  => $button["pretag"],
+                        'close' => $button["posttag"]);
+            } else {
+                $buttonlist[] =  array(
+                        'type'   => 'insert',
+                        'title'  =>  $button["label"],
+                        'icon'   =>  $ico,
+                        'insert' => $button["code"],
+                        'block'  => true);
+            }
         }
+        return $buttonlist;
+    }
 
-	function loadCBData()
-	{
-		if (! $file = file_get_contents(DOKU_PLUGIN."custombuttons/config.json"))
-			return false;
-		$cbconf = json_decode($file,TRUE);
-		return $cbconf;
-	}
-	
-	function makelist()
-	{
-		$conf = $this->loadCBData();
-		$buttonlist = array();
-		foreach ($conf as $button)
-		{
-			if ($button["type"] == 1)
-			{
-				$buttonlist[] =  array(
-					'type' => 'format',
-					'title' => $button["label"],
-					'icon' => '../../plugins/custombuttons/genpng.php?text='.$button["label"],
-					'open' => $button["pretag"],
-					'close' => $button["posttag"]);
-			}
-			else
-			{
-				$buttonlist[] =  array(
-					'type'   => 'insert',
-					'title'  =>  $button["label"],
-					'icon'   =>  '../../plugins/custombuttons/genpng.php?text='.$button["label"],
-					'insert' => $button["code"],
-					'block'  => true);
-			}
-		}
-		return $buttonlist;
-	}
-
-        function insert_button(&$event, $param)
-	{
-		$buttonlist = $this->makelist();
-                $event->data[] = array (
-                        'type' => 'picker',
-                        'title' => 'Custom Buttons',
-			'icon' => '../../plugins/custombuttons/custom.png',
-                        'list' => $buttonlist
+    function insert_button(&$event, $param) {
+        $buttonlist = $this->makelist();
+        $event->data[] = array (
+                'type' => 'picker',
+                'title' => 'Custom Buttons',
+                'icon' => '../../plugins/custombuttons/custom.png',
+                'list' => $buttonlist
                 );
-        }
+    }
 }
 
-// vim:ts=4:sw=4:et:enc=utf-8:
