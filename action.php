@@ -9,29 +9,39 @@
 // must be run within Dokuwiki
 if (!defined('DOKU_INC')) die();
 
-if (!defined('DOKU_LF')) define('DOKU_LF', "\n");
-if (!defined('DOKU_TAB')) define('DOKU_TAB', "\t");
-if (!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN',DOKU_INC.'lib/plugins/');
-
-require_once DOKU_PLUGIN.'action.php';
-
+/**
+ * Add Event handler
+ */
 class action_plugin_custombuttons extends DokuWiki_Action_Plugin {
 
-    function register(&$controller) {
+    /**
+     * Registers a callback function for a given event
+     */
+    function register(Doku_Event_Handler $controller) {
         if ($this->loadCBData())
             $controller->register_hook('TOOLBAR_DEFINE', 'AFTER', $this, 'insert_button', array());
     }
 
-    function loadCBData() {
+    /**
+     * Read config
+     *
+     * @return bool|mixed
+     */
+    protected function loadCBData() {
         $json = new JSON(JSON_LOOSE_TYPE);
         $file = @file_get_contents(DOKU_PLUGIN."custombuttons/config.json");
         if(!$file) return false;
         return $json->decode($file);
     }
 
-
-    function makelist() {
+    /**
+     * Build list of buttons
+     *
+     * @return array
+     */
+    protected function makelist() {
         $conf = $this->loadCBData();
+
         $buttonlist = array();
         foreach ($conf as $button) {
             $ico = '../../plugins/custombuttons/';
@@ -51,8 +61,8 @@ class action_plugin_custombuttons extends DokuWiki_Action_Plugin {
             } else {
                 $buttonlist[] =  array(
                         'type'   => 'insert',
-                        'title'  =>  $button["label"],
-                        'icon'   =>  $ico,
+                        'title'  => $button["label"],
+                        'icon'   => $ico,
                         'insert' => $button["code"],
                         'block'  => true);
             }
@@ -60,14 +70,26 @@ class action_plugin_custombuttons extends DokuWiki_Action_Plugin {
         return $buttonlist;
     }
 
-    function insert_button(&$event, $param) {
+    /**
+     * Add list with buttons to toolbar
+     *
+     * @param Doku_Event $event
+     * @param            $param
+     */
+    public function insert_button(Doku_Event $event, $param) {
         $buttonlist = $this->makelist();
-        $event->data[] = array (
+
+        if($this->getConf('usepicker')) {
+            $event->data[] = array (
                 'type' => 'picker',
                 'title' => 'Custom Buttons',
                 'icon' => '../../plugins/custombuttons/custom.png',
                 'list' => $buttonlist
-                );
+            );
+        } else {
+            $event->data = array_merge($event->data, $buttonlist);
+        }
+
     }
 }
 
