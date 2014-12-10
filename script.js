@@ -2,9 +2,12 @@
 // UI.selectmenu rebuild the select such that it can be layouted
 jQuery.widget("custom.iconpickerSelectmenu", jQuery.ui.selectmenu, {
     _renderItem: function(ul, item) {
-        var li = jQuery( "<li>" )
-            .css("background", 'url(' + DOKU_BASE + 'lib/plugins/custombuttons/ico/' + item.value + ') 2px center no-repeat')
-            .css('padding-left', '20px');
+        var li = jQuery( "<li>");
+        if(item.value) {
+            li.css("background", 'url(' + DOKU_BASE + 'lib/plugins/custombuttons/ico/' + item.value + ') 2px center no-repeat')
+                .css('padding-left', '20px');
+        }
+
 
         if ( item.disabled ) {
             li.addClass( "ui-state-disabled" );
@@ -19,9 +22,11 @@ jQuery.widget("custom.iconpickerSelectmenu", jQuery.ui.selectmenu, {
 jQuery(function(){
     jQuery('.custombutton_iconpicker').iconpickerSelectmenu({
         change: function(event, ui){
-            jQuery('.ui-selectmenu-text')
-                .css("background", 'url(' + DOKU_BASE + 'lib/plugins/custombuttons/ico/' + ui.item.value + ') 2px center no-repeat')
-                .css('padding-left', '20px');
+            if(ui.item.value) {
+                jQuery('.ui-selectmenu-text')
+                    .css("background", 'url(' + DOKU_BASE + 'lib/plugins/custombuttons/ico/' + ui.item.value + ') 2px center no-repeat')
+                    .css('padding-left', '20px');
+            }
         }
     });
 });
