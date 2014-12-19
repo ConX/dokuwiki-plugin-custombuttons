@@ -6,7 +6,12 @@ header("Cache-Control: no-cache, must-revalidate");
 header("Pragma: no-cache");
 
 /*image generation code*/
-$bg = imagecreatetruecolor(isset($_GET['text']) ? strlen($_GET['text'])*11 : 66, 15);
+if(isset($_GET['text'])) {
+    $width = strlen($_GET['text']) * 11;
+} else {
+    $width = 66;
+}
+$bg = imagecreatetruecolor($width, 15);
 
 //This will make it transparent
 imagesavealpha($bg, true);
