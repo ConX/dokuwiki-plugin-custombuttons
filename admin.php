@@ -24,6 +24,13 @@ class admin_plugin_custombuttons extends DokuWiki_Admin_Plugin {
     }
 
     /**
+     * return prompt for admin menu
+     */
+    function getMenuText($language) {
+        return $this->getLang('name');
+    }
+
+    /**
      * Read config
      *
      * @return bool|mixed
@@ -47,7 +54,7 @@ class admin_plugin_custombuttons extends DokuWiki_Admin_Plugin {
         if(is_writable($configfile) || (!file_exists($configfile) && is_writable(DOKU_PLUGIN."custombuttons"))) {
             file_put_contents($configfile, $json);
         } else {
-            msg('No write access to config file', -1);
+            msg($this->getLang('txt_error'), -1);
         }
     }
 
@@ -93,7 +100,7 @@ class admin_plugin_custombuttons extends DokuWiki_Admin_Plugin {
         global $ID;
         $conf = $this->loadCBData();
 
-        ptln('<h3>Buttons List</h3>');
+        ptln('<h3>'.$this->getLang('btnslist').'</h3>');
 
         ptln('<form action="'.wl($ID).'" method="post">');
         ptln('  <input type="hidden" name="do"   value="admin" />');
@@ -101,7 +108,7 @@ class admin_plugin_custombuttons extends DokuWiki_Admin_Plugin {
         formSecurityToken();
 
         ptln('  <table class="inline">');
-        ptln('    <tr><th>Label</th><th>Code</th><th>Delete?</th></tr>');
+        ptln('    <tr><th>'.$this->getLang('btnslist_label').'</th><th>'.$this->getLang('btnslist_code').'</th><th>'.$this->getLang('btnslist_delete').'</th></tr>');
         if ($conf) {
             foreach ($conf as $key => $button) {
                 if (!$button["type"]) {
@@ -126,24 +133,24 @@ class admin_plugin_custombuttons extends DokuWiki_Admin_Plugin {
         }
         ptln('  </table>');
 
-        ptln('<input type="submit" class="button" value="Delete Selected"/>');
+        ptln('<input type="submit" class="button" value="'.$this->getLang('btn_delete').'"/>');
         ptln('</form>');
 
 
         ptln('<br /><br />');
 
-        ptln('<h3>Add Button</h3>');
+        ptln('<h3>'.$this->getLang('addbtn').'</h3>');
 
         ptln('<form action="'.wl($ID).'" method="post">');
         ptln('  <input type="hidden" name="do"   value="admin" />');
-        ptln('  <input type="hidden" name="add"   value="1" />');
+        ptln('  <input type="hidden" name="add"  value="1" />');
         ptln('  <input type="hidden" name="page" value="'.$this->getPluginName().'" />');
         formSecurityToken();
 
         ptln('  <table>');
-        ptln('    <tr><th>Icon:</th><td>');
+        ptln('    <tr><th>'.$this->getLang('addbtn_icon').'</th><td>');
         ptln('<select name="icon" class="custombutton_iconpicker">');
-        ptln('<option value="">text only</option>');
+        ptln('<option value="">'.$this->getLang('addbtn_textonly').'</option>');
         $files = glob(dirname(__FILE__).'/ico/*.png');
         foreach($files as $file){
             $file = hsc(basename($file));
@@ -151,17 +158,17 @@ class admin_plugin_custombuttons extends DokuWiki_Admin_Plugin {
         }
         ptln('</select>');
         ptln('    </td></tr>');
-        ptln('    <tr><th>Label:</th><td><input type="text" name="label" /></td></tr>');
-        ptln('    <tr><th>Pre tag:</th><td><input type="text" name="pretag" /><b> *</b></td></tr>');
-        ptln('    <tr><th>Post tag:</th><td><input type="text" name="posttag" /><b> *</b></td></tr>');
-        ptln('    <tr><th>Code:</th><td><input type="text" name="code" /></td></tr>');
+        ptln('    <tr><th>'.$this->getLang('addbtn_label').'</th><td><input type="text" name="label" /></td></tr>');
+        ptln('    <tr><th>'.$this->getLang('addbtn_pretag').'</th><td><input type="text" name="pretag" /><b> *</b></td></tr>');
+        ptln('    <tr><th>'.$this->getLang('addbtn_posttag').'</th><td><input type="text" name="posttag" /><b> *</b></td></tr>');
+        ptln('    <tr><th>'.$this->getLang('addbtn_code').'</th><td><input type="text" name="code" /></td></tr>');
         ptln('  </table>');
 
-        ptln('  <input type="submit" class="button" value="Add" />');
+        ptln('  <input type="submit" class="button" value="'.$this->getLang('btn_add').'" />');
         ptln('</form>');
 
         ptln('<br><br>');
 
-        ptln('<div><b>*</b> If you dont want to add a shortcut button with pre and post code leave those fields empty.</div>');
+        ptln('<div>'.$this->getLang('txt_comment').'</div>');
     }
 }
