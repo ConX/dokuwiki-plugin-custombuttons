@@ -1,13 +1,13 @@
 <?php
 /**
- * DokuWiki Plugin cstbtn (Action Component)
+ * DokuWiki Plugin custombuttons (Action Component)
  *
  * @license GPL 2 http://www.gnu.org/licenses/gpl-2.0.html
  * @author  Constantinos Xanthopoulos <conx@xanthopoulos.info>
  */
 
 // must be run within Dokuwiki
-if(!defined('DOKU_INC')) die();
+if (!defined('DOKU_INC')) die();
 
 /**
  * Add Event handler
@@ -84,7 +84,7 @@ class action_plugin_custombuttons extends DokuWiki_Action_Plugin {
         if($this->getConf('usepicker')) {
             $event->data[] = array(
                 'type' => 'picker',
-                'title' => 'Custom Buttons',
+                'title' => $this->getLang('picker'),
                 'icon' => '../../plugins/custombuttons/custom.png',
                 'list' => $buttonlist
             );
