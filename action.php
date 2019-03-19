@@ -44,7 +44,7 @@ class action_plugin_custombuttons extends DokuWiki_Action_Plugin {
 
         $buttonlist = array();
         foreach($conf as $button) {
-            $ico = '../../plugins/custombuttons/';
+            $ico = '/lib/plugins/custombuttons/';
             if(!$button['icon']) {
                 $ico .= 'genpng.php?text=' . $button["label"];
             } else {
@@ -85,7 +85,7 @@ class action_plugin_custombuttons extends DokuWiki_Action_Plugin {
             $event->data[] = array(
                 'type' => 'picker',
                 'title' => $this->getLang('picker'),
-                'icon' => '../../plugins/custombuttons/custom.png',
+                'icon' => '/lib/plugins/custombuttons/custom.png',
                 'list' => $buttonlist
             );
         } else {
