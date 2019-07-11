@@ -138,7 +138,7 @@ class admin_plugin_custombuttons extends DokuWiki_Admin_Plugin {
 		}
 		echo '
 		</table>
-		<input type = "submit" class = "button b" value = "'.$this->getLang ( 'btn_delete' ).'"/>
+		<input type = "submit" class = "button" value = "'.$this->getLang ( 'btn_delete' ).'"/>
 	</form>
 	
 	<h3>'.$this->getLang('addbtn').'</h3>
@@ -195,7 +195,7 @@ class admin_plugin_custombuttons extends DokuWiki_Admin_Plugin {
 				<td></td>
 			</tr>
 		</table>
-		<input type = "submit" class = "button b" value = "'.$this->getLang ( 'btn_add' ).'" />
+		<input type = "submit" class = "button" value = "'.$this->getLang ( 'btn_add' ).'" />
 	</form>
 	<div id = "cb_comment" >'.$this->getLang ( 'txt_comment' ).'</div>
 </div>';
