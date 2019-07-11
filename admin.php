@@ -140,9 +140,9 @@ class admin_plugin_custombuttons extends DokuWiki_Admin_Plugin {
 		</table>
 		<input type = "submit" class = "button" value = "'.$this->getLang ( 'btn_delete' ).'"/>
 	</form>
+     </br></br>
 	
 	<h3>'.$this->getLang('addbtn').'</h3>
-	
 	<form id = "cb_add_button" action = "'.wl ( $ID ).'" method = "post">
 		<input type = "hidden" name = "do" value = "admin" />
 		<input type = "hidden" name = "add" value = "1" />
