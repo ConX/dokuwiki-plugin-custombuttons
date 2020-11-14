@@ -56,34 +56,35 @@ class admin_plugin_custombuttons extends DokuWiki_Admin_Plugin {
      * Execute the requested action
      */
     public function handle() {
+        global $INPUT;
 
-        if (isset($_REQUEST['add'])) {
+        if ($INPUT->has('add')) {
             if (!checkSecurityToken()) return;
 
             $conf = $this->loadCBData();
-            if(!$conf) {
+            if (!$conf) {
                 $conf = array();
             }
             $type = 0;
-            if ($_REQUEST["pretag"] != "" && $_REQUEST["posttag"] != "") {
+            if ($INPUT->str('pretag') != '' && $INPUT->str('posttag') != '') {
                 $type = 1;
             }
             array_push($conf, array(
-                'label' => $_REQUEST["label"],
-                'code'  => $_REQUEST["code"],
+                'label' => $INPUT->str('label'),
+                'code'  => $INPUT->str('code'),
                 'type'  => $type,
-                'pretag'  => $_REQUEST["pretag"],
-                'posttag' => $_REQUEST["posttag"],
-                'icon' => $_REQUEST["icon"],
+                'pretag'  => $INPUT->str('pretag'),
+                'posttag' => $INPUT->str('posttag'),
+                'icon'  => $INPUT->str('icon'),
             ));
 
             $this->saveCBData($conf);
             $this->reloadBar();
-        } elseif (isset($_REQUEST['delete'])) {
+        } elseif ($INPUT->has('delete')) {
             if (!checkSecurityToken()) return;
 
             $conf = $this->loadCBData();
-            unset($conf[$_REQUEST["delete"]]);
+            unset($conf[$INPUT->int('delete')]);
             $this->saveCBData($conf);
             $this->reloadBar();
         }
