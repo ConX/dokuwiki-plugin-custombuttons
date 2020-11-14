@@ -5,13 +5,6 @@
  * @license GPL 2 http://www.gnu.org/licenses/gpl-2.0.html
  * @author Constantinos Xanthopoulos <conx@xanthopoulos.info>
  */
-
-// must be run within Dokuwiki
-if (!defined('DOKU_INC')) die();
-
-/**
- * Class admin_plugin_custombuttons
- */
 class admin_plugin_custombuttons extends DokuWiki_Admin_Plugin {
 
 	/**
@@ -36,10 +29,9 @@ class admin_plugin_custombuttons extends DokuWiki_Admin_Plugin {
 	 * @return bool|mixed
 	 */
 	protected function loadCBData() {
-		$json = new JSON(JSON_LOOSE_TYPE);
 		$file = @file_get_contents(DOKU_PLUGIN."custombuttons/config.json");
 		if(!$file) return false;
-		return $json->decode($file);
+		return json_decode($file, true);
 	}
 
 	/**
@@ -48,11 +40,9 @@ class admin_plugin_custombuttons extends DokuWiki_Admin_Plugin {
 	 * @param $conf
 	 */
 	protected function saveCBData($conf) {
-		$json = new JSON();
-		$json = $json->encode($conf);
 		$configfile = DOKU_PLUGIN."custombuttons/config.json";
 		if(is_writable($configfile) || (!file_exists($configfile) && is_writable(DOKU_PLUGIN."custombuttons"))) {
-			file_put_contents($configfile, $json);
+			file_put_contents($configfile, json_encode($conf));
 		} else {
 			msg($this->getLang('txt_error'), -1);
 		}
