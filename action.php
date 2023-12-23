@@ -60,7 +60,8 @@ class action_plugin_custombuttons extends ActionPlugin
                     'icon' => $ico,
                     'open' => $button['pretag'],
                     'close' => $button['posttag'],
-                    'sample' => $button['sample'] ?? ''
+                    'sample' => $button['sample'] ?? '',
+                    'class' => $button['icon'] ? '' : 'textbutton'
                 ];
             } else {
                 $buttonlist[] = [
@@ -68,7 +69,8 @@ class action_plugin_custombuttons extends ActionPlugin
                     'title' => $button['label'],
                     'icon' => $ico,
                     'insert' => $button['code'],
-                    'block' => true
+                    'block' => true,
+                    'class' => $button['icon'] ? '' : 'textbutton'
                 ];
             }
         }

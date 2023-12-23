@@ -5,30 +5,32 @@ header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 header("Cache-Control: no-cache, must-revalidate");
 header("Pragma: no-cache");
 
-/*image generation code*/
-if (isset($_GET['text'])) {
-    $width = strlen($_GET['text']) * 11;
-} else {
-    $width = 66;
-}
-$bg = imagecreatetruecolor($width, 15);
+/* image generation code */
+
+//Text to be written
+$text = $_GET['text'] ?? "No Name";
+
+//font
+$font = './DejaVuSans.ttf'; //path to font you want to use
+$fontsize = 10; //size of font
+
+//calculate width from bounding box for the text
+$tb = imagettfbbox($fontsize, 0, $font, $text);
+$width = $tb[2] - $tb[0];
+
+$bg = imagecreatetruecolor($width, 16);
 
 //This will make it transparent
 imagesavealpha($bg, true);
 $trans_colour = imagecolorallocatealpha($bg, 0, 0, 0, 127);
 imagefill($bg, 0, 0, $trans_colour);
 
-//Text to be written
-$text = isset($_GET['text']) ? $_GET['text'] : "No Name";
-
 // Black Text
 $black = imagecolorallocate($bg, 0, 0, 0);
 
-$font = './DejaVuSans.ttf'; //path to font you want to use
-$fontsize = 10; //size of font
-
-//Writes text to the image using fonts using FreeType 2
-imagettftext($bg, $fontsize, 0, 10, 12, $black, $font, $text);
+//Writes text to the image using fonts using a TrueType font
+//no x margin, because button adds margin as well
+imagettftext($bg, $fontsize, 0, 0, 12, $black, $font, $text);
 
 //Create image
 imagepng($bg);
