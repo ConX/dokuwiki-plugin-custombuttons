@@ -8,7 +8,7 @@ jQuery(function() {  // on page load
     $pretagInput.on('keyup', function() {
         let hasPrePostTags = jQuery(this).val() !== '' || $posttagInput.val() !== '';
         $codeInput.prop("disabled", hasPrePostTags);
-    });
+    }).keyup();
     $posttagInput.on('keyup', function() {
         let hasPrePostTags = jQuery(this).val() !== '' || $pretagInput.val() !== '';
         $codeInput.prop("disabled", hasPrePostTags);
@@ -20,5 +20,5 @@ jQuery(function() {  // on page load
         $pretagInput.prop("disabled", hasCodeTag);
         $posttagInput.prop("disabled", hasCodeTag);
         $sampleInput.prop("disabled", hasCodeTag);
-    });
+    }).keyup();
 });
