@@ -130,7 +130,7 @@ class admin_plugin_custombuttons extends DokuWiki_Admin_Plugin {
                 } else {
                     echo '<td>'.hsc($button['pretag']).hsc($button['sample'] ?? '').hsc($button['posttag']).'</td>';
                 };
-                echo '<td><input type="checkbox" name="delete" value="'.$key.'"/></td>';
+                echo '<td><input type="radio" name="delete" value="'.$key.'"/></td>';
                 echo '</tr>';
             }
         }
