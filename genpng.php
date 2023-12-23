@@ -6,7 +6,7 @@ header("Cache-Control: no-cache, must-revalidate");
 header("Pragma: no-cache");
 
 /*image generation code*/
-if(isset($_GET['text'])) {
+if (isset($_GET['text'])) {
     $width = strlen($_GET['text']) * 11;
 } else {
     $width = 66;
@@ -22,7 +22,7 @@ imagefill($bg, 0, 0, $trans_colour);
 $text = isset($_GET['text']) ? $_GET['text'] : "No Name";
 
 // Black Text
-$black = imagecolorallocate($bg, 0,0,0);
+$black = imagecolorallocate($bg, 0, 0, 0);
 
 $font = './DejaVuSans.ttf'; //path to font you want to use
 $fontsize = 10; //size of font
