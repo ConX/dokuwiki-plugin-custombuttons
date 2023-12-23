@@ -69,14 +69,15 @@ class admin_plugin_custombuttons extends DokuWiki_Admin_Plugin {
             if ($INPUT->str('pretag') != '' && $INPUT->str('posttag') != '') {
                 $type = 1;
             }
-            array_push($conf, array(
+            $conf[] = array(
                 'label' => $INPUT->str('label'),
-                'code'  => $INPUT->str('code'),
-                'type'  => $type,
-                'pretag'  => $INPUT->str('pretag'),
+                'code' => $INPUT->str('code'),
+                'type' => $type,
+                'pretag' => $INPUT->str('pretag'),
                 'posttag' => $INPUT->str('posttag'),
-                'icon'  => $INPUT->str('icon'),
-            ));
+                'sample' => $INPUT->str('sample'),
+                'icon' => $INPUT->str('icon')
+            );
 
             $this->saveCBData($conf);
             $this->reloadBar();
@@ -117,16 +118,17 @@ class admin_plugin_custombuttons extends DokuWiki_Admin_Plugin {
         if ($conf) {
             foreach ($conf as $key => $button) {
                 echo '<tr>';
-                if (!$button['type']) {
-                    echo '<td>'.hsc($button['label']).'</td>'
-                        .'<td>'.hsc($button['code']).'</td>';
+
+                $icon = '';
+                if ($button['icon']) {
+                    $icon = '<img src="'. DOKU_BASE.'lib/plugins/custombuttons/ico/'.$button['icon'].'" /> ';
+                }
+                echo '<td>'.$icon.hsc($button['label']).'</td>';
+
+                if ($button['type'] === 0) {
+                    echo '<td>'.hsc($button['code']).'</td>';
                 } else {
-                    $icon = '';
-                    if ($button['icon']) {
-                        $icon = '<img src="'. DOKU_BASE.'lib/plugins/custombuttons/ico/'.$button['icon'].'" /> ';
-                    }
-                    echo '<td>'.$icon.hsc($button['label']).'</td>'
-                        .'<td>'.hsc($button['pretag']).hsc($button['code']).hsc($button['posttag']).'</td>';
+                    echo '<td>'.hsc($button['pretag']).hsc($button['sample'] ?? '').hsc($button['posttag']).'</td>';
                 };
                 echo '<td><input type="checkbox" name="delete" value="'.$key.'"/></td>';
                 echo '</tr>';
@@ -172,6 +174,11 @@ class admin_plugin_custombuttons extends DokuWiki_Admin_Plugin {
         echo '<tr>'
             .'<th>'.$this->getLang('addbtn_posttag').'</th>'
             .'<td><input type="text" name="posttag" /></td>'
+            .'<td>*</td>'
+            .'</tr>';
+        echo '<tr>'
+            .'<th>'.$this->getLang('addbtn_sample').'</th>'
+            .'<td><input type="text" name="sample" /></td>'
             .'<td>*</td>'
             .'</tr>';
         echo '<tr>'

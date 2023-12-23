@@ -49,7 +49,8 @@ class action_plugin_custombuttons extends DokuWiki_Action_Plugin {
                     'title' => $button['label'],
                     'icon' => $ico,
                     'open' => $button['pretag'],
-                    'close' => $button['posttag']
+                    'close' => $button['posttag'],
+                    'sample' => $button['sample'] ?? ''
                 );
             } else {
                 $buttonlist[] = array(
