@@ -66,7 +66,7 @@ class admin_plugin_custombuttons extends DokuWiki_Admin_Plugin {
                 $conf = array();
             }
             $type = 0;
-            if ($INPUT->str('pretag') != '' && $INPUT->str('posttag') != '') {
+            if ($INPUT->str('pretag') != '' || $INPUT->str('posttag') != '') {
                 $type = 1;
             }
             $conf[] = array(
