@@ -1,18 +1,26 @@
 <?php
+
+use dokuwiki\Extension\ActionPlugin;
+use dokuwiki\Extension\Event;
+use dokuwiki\Extension\EventHandler;
+
 /**
  * DokuWiki Plugin custombuttons (Action Component)
  *
  * @license GPL 2 http://www.gnu.org/licenses/gpl-2.0.html
  * @author  Constantinos Xanthopoulos <conx@xanthopoulos.info>
  */
-class action_plugin_custombuttons extends DokuWiki_Action_Plugin {
+class action_plugin_custombuttons extends ActionPlugin
+{
 
     /**
      * Registers a callback function for a given event
      */
-    public function register(Doku_Event_Handler $controller) {
-        if ($this->loadCBData())
-            $controller->register_hook('TOOLBAR_DEFINE', 'AFTER', $this, 'insert_button', array());
+    public function register(EventHandler $controller)
+    {
+        if ($this->loadCBData()) {
+            $controller->register_hook('TOOLBAR_DEFINE', 'AFTER', $this, 'insertButton', []);
+        }
     }
 
     /**
@@ -20,9 +28,10 @@ class action_plugin_custombuttons extends DokuWiki_Action_Plugin {
      *
      * @return bool|mixed
      */
-    protected function loadCBData() {
+    protected function loadCBData()
+    {
         $file = @file_get_contents(DOKU_PLUGIN . "custombuttons/config.json");
-        if(!$file) return false;
+        if (!$file) return false;
         return json_decode($file, true);
     }
 
@@ -31,34 +40,38 @@ class action_plugin_custombuttons extends DokuWiki_Action_Plugin {
      *
      * @return array
      */
-    protected function makelist() {
+    protected function makelist()
+    {
         $conf = $this->loadCBData();
 
-        $buttonlist = array();
+        $buttonlist = [];
         foreach ($conf as $button) {
             $ico = '../../plugins/custombuttons/';
             if (!$button['icon']) {
-                $ico .= 'genpng.php?text='. $button['label'];
+                $ico .= 'genpng.php?text=' . $button['label'];
             } else {
-                $ico .= 'ico/'. $button['icon'];
+                $ico .= 'ico/' . $button['icon'];
             }
 
             if ($button['type'] == 1) {
-                $buttonlist[] = array(
+                $buttonlist[] = [
                     'type' => 'format',
                     'title' => $button['label'],
                     'icon' => $ico,
                     'open' => $button['pretag'],
-                    'close' => $button['posttag']
-                );
+                    'close' => $button['posttag'],
+                    'sample' => $button['sample'] ?? '',
+                    'class' => $button['icon'] ? '' : 'textbutton'
+                ];
             } else {
-                $buttonlist[] = array(
+                $buttonlist[] = [
                     'type' => 'insert',
                     'title' => $button['label'],
                     'icon' => $ico,
                     'insert' => $button['code'],
-                    'block' => true
-                );
+                    'block' => true,
+                    'class' => $button['icon'] ? '' : 'textbutton'
+                ];
             }
         }
         return $buttonlist;
@@ -67,23 +80,22 @@ class action_plugin_custombuttons extends DokuWiki_Action_Plugin {
     /**
      * Add list with buttons to toolbar
      *
-     * @param Doku_Event $event
-     * @param            $param
+     * @param Event $event
      */
-    public function insert_button(Doku_Event $event, $param) {
+    public function insertButton(Event $event)
+    {
         $buttonlist = $this->makelist();
 
         if ($this->getConf('usepicker')) {
-            $event->data[] = array(
+            $event->data[] = [
                 'type' => 'picker',
                 'title' => $this->getLang('picker'),
                 'icon' => '../../plugins/custombuttons/custom.png',
                 'list' => $buttonlist
-            );
+            ];
         } else {
             $event->data = array_merge($event->data, $buttonlist);
         }
-
     }
 }
 

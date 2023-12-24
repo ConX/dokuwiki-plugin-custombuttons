@@ -1,7 +1,7 @@
 base   custombuttons
 author Constantinos Xanthopoulos, Gerrit Uitslag
 email  conx@xanthopoulos.info, klapinklapin@gmail.com
-date   2021-02-28
+date   2023-12-24
 name   CustomButtons Plugin
 desc   A plugin for adding custom buttons to the toolbar, to shortcut commonly used code blocks.
 url    https://www.dokuwiki.org/plugin:custombuttons
